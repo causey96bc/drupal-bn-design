@@ -1,0 +1,29 @@
+version: "3.5"
+
+services:
+  db:
+    image: mariadb:10
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=drupal
+      - MYSQL_USER=drupal
+      - MYSQL_PASSWORD=drupal
+  php:
+    build: ${PWD}/docker/php
+    user: ${UID}:${GID}
+    volumes:
+      - ${PWD}:/var/www
+    working_dir: /var/www
+    environment:
+      - HOME=/var/www
+      - PATH=/var/www/drupal/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  web:
+    image: nginx:1.19.4-alpine
+    volumes:
+      - ${PWD}:/var/www
+      - ${PWD}/docker/nginx/conf.d:/etc/nginx/conf.d
+
+volumes:
+  mysql-data:

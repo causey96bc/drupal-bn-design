@@ -1,0 +1,8 @@
+.composer
+.drush
+/.env
+/drupal
+/mysql-data
+
+#remove next line once you have seeded your Drupal project
+/drupal/composer.lock
